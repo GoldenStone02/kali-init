@@ -13,17 +13,22 @@ USER = os.getenv("USER")
 # List of repositories to clone
 REPOSITORIES = [
     {
-        'url':'https://github.com/pwndbg/pwndbg',
+        'url': 'https://github.com/pwndbg/pwndbg',
         'required-setup': True,
         'setup': ['cd pwndbg', 'chmod +x setup.sh', './setup.sh']
     },
     {
-        'url':'https://raw.githubusercontent.com/Crypto-Cat/CTF/main/auto_ghidra.py',
+        'url': 'https://raw.githubusercontent.com/Crypto-Cat/CTF/main/auto_ghidra.py',  # noqa: E501
         'required-setup': False
     },
     {
-        'url':'https://github.com/bitsadmin/wesng',
+        'url': 'https://github.com/bitsadmin/wesng',
         'required-setup': False
+    },
+    {
+        'url': 'https://github.com/RustScan/RustScan/releases/download/2.0.1/rustscan_2.0.1_amd64.deb',  # noqa: E501
+        'required-setup': True,
+        'setup': ['dpkg -i rustscan_2.0.1_amd64.deb']
     }
 ]
 
@@ -51,13 +56,16 @@ ALIASES = [
 
 # Dict of Files and commands to write additional configuration to
 CONFIG = {
-    '.gdbinit': 'source ~/Desktop/apps/pwndbg/gdbinit.py'    # Installation of pwndbg into gdb
+    # Installation of pwndbg into gdb
+    '.gdbinit': 'source ~/Desktop/apps/pwndbg/gdbinit.py'
 }
 
 # Used for coloring the logging output
-# Credit to: 
+# Credit to:
 #  https://betterstack.com/community/questions/how-to-color-python-logging-output/
 #  https://alexandra-zaharia.github.io/posts/make-your-own-custom-color-formatter-with-python-logging/
+
+
 class CustomFormatter(logging.Formatter):
     grey = '\x1b[38;21m'
     blue = '\x1b[38;5;39m'
@@ -66,8 +74,6 @@ class CustomFormatter(logging.Formatter):
     bold_red = '\x1b[31;1m'
     reset = '\x1b[0m'
 
-    # Old formatting version
-    # format = "%(asctime)s - %(name)s - %(levelname)s - %(message)s (%(filename)s:%(lineno)d)"
     time = "[%(asctime)s] ["
     type = "%(levelname)s"
     end = "] %(name)s - %(message)s (%(filename)s:%(lineno)s)"
@@ -85,6 +91,7 @@ class CustomFormatter(logging.Formatter):
         formatter = logging.Formatter(log_fmt)
         return formatter.format(record)
 
+
 # Create custom logger logging all five levels
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
@@ -94,8 +101,9 @@ stdout_handler = logging.StreamHandler()
 stdout_handler.setFormatter(CustomFormatter())
 logger.addHandler(stdout_handler)
 
+
 def add_aliases():
-    '''Check the shell in use and add aliases to its respective rc file. 
+    '''Check the shell in use and add aliases to its respective rc file.
     \nE.g.`.bash_aliases` or `.zshrc`
     '''
     # As a side note, Kali Linux uses zsh by default.
@@ -116,7 +124,7 @@ def add_aliases():
         else:
             logger.error("The shell used is not supported.")
             return
-        
+
         added = 0
         # Check if the aliases already exist in the rc file
         with open(filename, 'r') as f:
@@ -132,10 +140,11 @@ def add_aliases():
         # Check if any aliases were added
         if added:
             logger.info(f"Aliases added to the {filename} file.")
-    
+
     else:
         logger.warning("Unable to determine the shell in use.")
         return
+
 
 def main():
     # Update and upgrade the system
@@ -149,12 +158,14 @@ def main():
 
     # Install the applications
     try:
-        os.chdir("/home/" + USER + "/Desktop/apps") # Change to user's Desktop/apps directory
+        # Attempts to change to user's Desktop/apps directory
+        os.chdir("/home/" + USER + "/Desktop/apps")
     except FileNotFoundError:
-        os.mkdir("/home/" + USER + "/Desktop/apps") # Create the directory if it doesn't exist
-        os.chdir("/home/" + USER + "/Desktop/apps") # Change to user's Desktop/apps directory
+        # Create the directory if it doesn't exist and change to it
+        os.mkdir("/home/" + USER + "/Desktop/apps")
+        os.chdir("/home/" + USER + "/Desktop/apps")
         logger.info("Created Desktop/apps directory.")
-    
+
     # Clone the repositories
     for repo in REPOSITORIES:
         logger.debug(repo)
@@ -164,7 +175,7 @@ def main():
             logger.info("Repository already exists: " + repo_url)
             continue
         else:
-            if "raw.githubusercontent.com" in repo_url:
+            if "raw.githubusercontent.com" in repo_url or repo['wget'] is True:
                 check = subprocess.run(["wget", repo_url])
             elif "github.com":
                 check = subprocess.run(["git", "clone", repo_url])
@@ -176,7 +187,7 @@ def main():
             if check.returncode != 0:
                 logger.critical("Unable to download the file: " + repo_url)
                 return
-        
+
         if repo['required-setup']:
             for command in repo['setup']:
                 if "cd" in command:
@@ -184,14 +195,15 @@ def main():
                     continue
                 os.system(command)
                 logger.info("Successfully ran the command: " + command)
-            os.chdir("/home/" + USER + "/Desktop/apps") # Change to user's Desktop/apps directory
+            # Change to user's Desktop/apps directory
+            os.chdir("/home/" + USER + "/Desktop/apps")
 
         logger.info("Successfully downloaded and configured: " + repo_url)
-    
-    # Check the current working directory and change it to the user's home directory
+
+    # Check the current directory and change it to the user's home directory
     if CURRENT_DIR != "/home/" + USER:
-        os.chdir("/home/" + USER) # Change to user's home directory
-    
+        os.chdir("/home/" + USER)  # Change to user's home directory
+
     # Install the applications
     for app in APPS:
         check = subprocess.run(["sudo", "apt-get", "install", "-y", app])
@@ -199,7 +211,7 @@ def main():
             logger.error("Unable to install the application: " + app)
             return
         logger.info("Successfully installed the application: " + app)
-    
+
     add_aliases()
 
     # Write the configuration files
@@ -209,7 +221,7 @@ def main():
             with open(file, 'r') as f:
                 config_file = f.read()
                 if command in config_file:
-                    logger.info("Configuration already exists in the file: " + file)
+                    logger.info(f"Configuration already exists in the file: {file}")  # noqa: E501
                     continue
                 else:
                     with open(file, 'a') as f:
@@ -217,8 +229,9 @@ def main():
         else:
             with open(file, 'w') as f:
                 f.write(command)
-        
+
         logger.info("Successfully wrote the configuration file: " + file)
+
 
 if __name__ == "__main__":
     main()
