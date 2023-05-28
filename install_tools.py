@@ -14,19 +14,23 @@ USER = os.getenv("USER")
 REPOSITORIES = [
     {
         'url': 'https://github.com/pwndbg/pwndbg',
+        'wget': False,
         'required-setup': True,
         'setup': ['cd pwndbg', 'chmod +x setup.sh', './setup.sh']
     },
     {
         'url': 'https://raw.githubusercontent.com/Crypto-Cat/CTF/main/auto_ghidra.py',  # noqa: E501
+        'wget': True,
         'required-setup': False
     },
     {
         'url': 'https://github.com/bitsadmin/wesng',
+        'wget': False,
         'required-setup': False
     },
     {
         'url': 'https://github.com/RustScan/RustScan/releases/download/2.0.1/rustscan_2.0.1_amd64.deb',  # noqa: E501
+        'wget': True,
         'required-setup': True,
         'setup': ['dpkg -i rustscan_2.0.1_amd64.deb']
     }
@@ -34,6 +38,7 @@ REPOSITORIES = [
 
 # List of applications to install
 APPS = [
+    'nmap',
     'fcrackzip',
     'checksec',
     'gdb',
@@ -43,8 +48,7 @@ APPS = [
     'ffuf',
     'tldr',
     'ltrace',
-    'strace',
-    'rustscan'
+    'strace'
 ]
 
 # Lists of aliases to add to the shell rc file
@@ -175,7 +179,7 @@ def main():
             logger.info("Repository already exists: " + repo_url)
             continue
         else:
-            if "raw.githubusercontent.com" in repo_url or repo['wget'] is True:
+            if "raw.githubusercontent.com" in repo_url or repo['wget']:
                 check = subprocess.run(["wget", repo_url])
             elif "github.com":
                 check = subprocess.run(["git", "clone", repo_url])
