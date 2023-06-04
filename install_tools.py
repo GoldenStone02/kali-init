@@ -32,7 +32,7 @@ REPOSITORIES = [
         'url': 'https://github.com/RustScan/RustScan/releases/download/2.0.1/rustscan_2.0.1_amd64.deb',  # noqa: E501
         'wget': True,
         'required-setup': True,
-        'setup': ['dpkg -i rustscan_2.0.1_amd64.deb']
+        'setup': ['sudo dpkg -i rustscan_2.0.1_amd64.deb']
     }
 ]
 
