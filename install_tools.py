@@ -39,6 +39,8 @@ REPOSITORIES = [
 # List of applications to install
 APPS = [
     'nmap',
+    'john',
+    'sqlmap',
     'fcrackzip',
     'checksec',
     'gdb',
@@ -63,11 +65,6 @@ CONFIG = {
     # Installation of pwndbg into gdb
     '.gdbinit': 'source ~/Desktop/apps/pwndbg/gdbinit.py'
 }
-
-# Used for coloring the logging output
-# Credit to:
-#  https://betterstack.com/community/questions/how-to-color-python-logging-output/
-#  https://alexandra-zaharia.github.io/posts/make-your-own-custom-color-formatter-with-python-logging/
 
 
 class CustomFormatter(logging.Formatter):
@@ -110,9 +107,6 @@ def add_aliases():
     '''Check the shell in use and add aliases to its respective rc file.
     \nE.g.`.bash_aliases` or `.zshrc`
     '''
-    # As a side note, Kali Linux uses zsh by default.
-    # While OS's such as Parrot OS use bash by default.
-    # So this script checks for both shell types.
 
     # Get Shell version
     filename = ""
@@ -201,7 +195,6 @@ def main():
                 logger.info("Successfully ran the command: " + command)
             # Change to user's Desktop/apps directory
             os.chdir("/home/" + USER + "/Desktop/apps")
-
         logger.info("Successfully downloaded and configured: " + repo_url)
 
     # Check the current directory and change it to the user's home directory
