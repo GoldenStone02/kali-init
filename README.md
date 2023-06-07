@@ -18,4 +18,5 @@ python3 install_tools.py
 ## To Do
 - [ ] Add CTF relevent tools
 - [ ] Add CLI for interaction
+- [ ] Add compatability with other OS (e.g. Parrot OS)
 
