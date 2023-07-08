@@ -49,6 +49,8 @@ APPS = [
     'seclists',
     'ffuf',
     'tldr',
+    'glow',
+    'eog',
     'ltrace',
     'strace'
 ]
