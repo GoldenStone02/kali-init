@@ -19,9 +19,9 @@ REPOSITORIES = [
         'setup': ['cd pwndbg', 'chmod +x setup.sh', './setup.sh']
     },
     {
-        'url': 'https://gist.githubusercontent.com/liba2k/d522b4f20632c4581af728b286028f8f/raw/0903904adb6a5f06636f179f7cf9fd94e0a4ec5d/ghidra.py',  # noqa: E501
+        'url': 'https://raw.githubusercontent.com/Crypto-Cat/CTF/main/auto_ghidra.py',  # noqa: E501
         'wget': True,
-        'required-setup': False
+        'required-setup': False,
     },
     {
         'url': 'https://github.com/bitsadmin/wesng',
