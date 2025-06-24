@@ -13,10 +13,10 @@ USER = os.getenv("USER")
 # List of repositories to clone
 REPOSITORIES = [
     {
-        'url': 'https://github.com/pwndbg/pwndbg',
-        'wget': False,
+        'url': 'https://github.com/pwndbg/pwndbg/releases/download/2025.05.30/pwndbg_2025.05.30_amd64.deb',
+        'wget': True,
         'required-setup': True,
-        'setup': ['cd pwndbg', 'chmod +x setup.sh', './setup.sh']
+        'setup': ['sudo apt install ./pwndbg_2025.05.30_amd64.deb']
     },
     {
         'url': 'https://raw.githubusercontent.com/Crypto-Cat/CTF/main/auto_ghidra.py',  # noqa: E501
@@ -29,10 +29,10 @@ REPOSITORIES = [
         'required-setup': False
     },
     {
-        'url': 'https://github.com/RustScan/RustScan/releases/download/2.0.1/rustscan_2.0.1_amd64.deb',  # noqa: E501
+        'url': 'https://github.com/bee-san/RustScan/releases/download/2.4.1/rustscan.deb.zip',  # noqa: E501
         'wget': True,
         'required-setup': True,
-        'setup': ['sudo dpkg -i rustscan_2.0.1_amd64.deb']
+        'setup': ['unzip rustscan.deb.zip','sudo dpkg -i rustscan_2.0.1_amd64.deb']
     }
 ]
 
@@ -48,7 +48,6 @@ APPS = [
     'gobuster',
     'seclists',
     'ffuf',
-    'tldr',
     'glow',
     'eog',
     'ltrace',
@@ -66,7 +65,7 @@ ALIASES = [
 # Dict of Files and commands to write additional configuration to
 CONFIG = {
     # Installation of pwndbg into gdb
-    '.gdbinit': 'source ~/Desktop/apps/pwndbg/gdbinit.py'
+    # '.gdbinit': 'source ~/Desktop/apps/pwndbg/gdbinit.py'
 }
 
 
