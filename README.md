@@ -6,7 +6,7 @@ Automatically installs Kali Linux tools and Open-Source tools
 
 ## Requirements
 - Python 3.7
-- An OS
+- An OS (Preferable Debian/Kali)
 - An internet connection
 
 ## Installation
