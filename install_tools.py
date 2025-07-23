@@ -33,6 +33,11 @@ REPOSITORIES = [
         'wget': True,
         'required-setup': True,
         'setup': ['unzip rustscan.deb.zip','sudo dpkg -i rustscan_2.0.1_amd64.deb']
+    },
+    {
+        'url': 'https://github.com/peass-ng/PEASS-ng/releases/latest/download/linpeas.sh',
+        'wget': True,
+        'required-setup': False,
     }
 ]
 
@@ -48,11 +53,12 @@ APPS = [
     'gobuster',
     'seclists',
     'ffuf',
-    'glow',
-    'eog',
+    'glow',         # Markdown viewer
+    'eog',          # Image viewer
     'ltrace',
     'strace',
-    'evil-winrm'
+    'evil-winrm',
+    'rlwrap',      # For wrapping terminal output
 ]
 
 # Lists of aliases to add to the shell rc file
@@ -62,7 +68,8 @@ ALIASES = [
     'alias lsa="ls -la"'
 ]
 
-# Dict of Files and commands to write additional configuration to
+# Dict of Files and commands to write additional configuration to respective files
+# [NOTE]: The files must be in the current directory or absolute path
 CONFIG = {
     # Installation of pwndbg into gdb
     # '.gdbinit': 'source ~/Desktop/apps/pwndbg/gdbinit.py'
