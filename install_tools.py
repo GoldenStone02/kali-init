@@ -59,6 +59,7 @@ APPS = [
     'strace',
     'evil-winrm',
     'rlwrap',      # For wrapping terminal output
+    'dirsearch'
 ]
 
 # Lists of aliases to add to the shell rc file
