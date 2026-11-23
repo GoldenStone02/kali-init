@@ -1,0 +1,52 @@
+---
+- name: "Updating apt repo/cache"
+  apt: update_cache=yes force_apt_get=yes cache_valid_time=3600
+  become: true
+  become_method: sudo
+
+- name: "Upgrade all packages"
+  apt: upgrade=yes force_apt_get=yes
+  become: true
+  become_method: sudo
+
+- name: "Remove unofficial docker images"
+  package:
+    name: 
+      - docker.io
+      - docker-compose
+      - docker-doc
+      - podman-docker
+    state: absent
+  register: docker_remove  
+  become: true
+  become_method: sudo
+
+- name: "Installing Packages"
+  package:
+    name:
+      - jq
+      - pipx
+      - ntpdate
+      - nmap
+      - john
+      - fcrackzip
+      - checksec
+      - gdb
+      - ghidra
+      - ffuf
+      - glow      # md viewer
+      - eog       # image viewer
+      - ltrace
+      - strace
+      - rlwrap
+    state: latest
+  become: true
+  become_method: sudo
+
+- name: "Remove NetExec - We want to use pipx for this"
+  package:
+    name: 
+      - netexec
+    state: absent
+  become: true
+  become_method: sudo

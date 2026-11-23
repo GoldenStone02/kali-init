@@ -1,0 +1,5 @@
+---
+- include_tasks: install-apt.yml
+- include_tasks: github-repos.yml
+- include_tasks: pipx-tools.yml
+- include_tasks: bloodhound.yml

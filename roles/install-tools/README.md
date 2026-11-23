@@ -1,0 +1,1 @@
+This role will be used to install and config tooling that doesn't come default within Kali Linux. 

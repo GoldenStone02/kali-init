@@ -4,6 +4,8 @@ Automatically installs Kali Linux tools and Open-Source tools
 > Open-Source tools within might have issues as `dpkg -i`
 > is used to extract the file content.
 
+This takes reference from ippsec's parrot-build installation (https://github.com/IppSec/parrot-build).
+
 ## Requirements
 - Python 3.7
 - An OS (Preferable Debian/Kali)
@@ -12,6 +14,7 @@ Automatically installs Kali Linux tools and Open-Source tools
 ## Installation
 ```bash
 git clone https://github.com/GoldenStone02/kali-init
+pipx install --include-deps ansible
 python3 install_tools.py
 ```
 
