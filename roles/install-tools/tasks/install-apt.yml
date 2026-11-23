@@ -9,6 +9,11 @@
   become: true
   become_method: sudo
 
+- name: "Remove unused dependencies"
+  apt: autoremove=yes purge=yes
+  become: true
+  become_method: sudo
+
 - name: "Remove unofficial docker images"
   package:
     name: 
